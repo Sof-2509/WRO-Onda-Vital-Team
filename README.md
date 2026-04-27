@@ -1,7 +1,4 @@
-Engineering materials
-====
 
-This repository contains engineering materials of a self-driven vehicle's model participating in the WRO Future Engineers competition in the season 2022.
 
 ## Content
 
@@ -30,15 +27,9 @@ This challenge emphasizes all aspects of the engineering process, including:
 - Obstacle Handling: Strategizing to detect and navigate traffic signs (red and green markers) within specified rules.
 - Documentation: Showcasing engineering progress, design decisions, and open-source collaboration through a public GitHub repository.
 
-## Photos of DELTA
+## Photos of ALPHA
 
-| Front view | Back view | Left view | 
-| ------------- |------------- | ------------- |
-| ![DELTA Front](https://github.com/user-attachments/assets/6b75534f-0f5e-4092-8571-abf5b8a0d158)| ![DELTA Back](https://github.com/user-attachments/assets/52d4785b-2a04-40ab-bfa1-ace6d514cec9)| ![DELTA Left](https://github.com/user-attachments/assets/4ff15c7c-de28-4c58-83e0-6b2941a30886)|
 
-| Right view | Top view | Bottom view |
-| ------------- | ------------- |------------- |
-|![DELTA Right](https://github.com/user-attachments/assets/4fad3d60-001c-4e51-b5a7-5031d2bf155f)| ![DELTA Top](https://github.com/user-attachments/assets/2741638f-efc4-4f0a-b089-daeeddca627b) |![DELTA Bottom](https://github.com/user-attachments/assets/dbf5b66c-b878-4635-9ba1-8910e8f668d6) |
 
 
 ## Management
