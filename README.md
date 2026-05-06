@@ -114,19 +114,18 @@ the ESP32 Expansion Board V1 30P is an add-on board designed to extend the funct
 We selected the ESP32 Expansion Board V1 30P for its convenient pin access, stable power distribution, and compatibility with a broad range of hardware components. Its well-organized layout, ease of integration, and community support streamline the development of complex robotics solutions, making it preferable to less modular expansion boards or direct wiring, which can lead to unreliable connections and increased troubleshooting.
 
 
-**Ultrasonic Sensor (hc-sr04):**
+**Tof Sensor (VL53L1X):**
 | Specifications: |
 | ------------- |
-| Accuracy:  ±3% |
-| Measurement Range: 2 a 450 cm |
-| Resolution:  0.3 cm |
-| Input voltage: 5V  |
-| Operating Current: 15mA |
-![Ultrasonic_Sensor](https://github.com/user-attachments/assets/ff7ceb5b-2965-475b-acc6-ad80540a37db)
+| Accuracy:  ±5% |
+| Measurement Range: 0 a 400 cm |
+| Resolution:  0.1 cm |
+| Input voltage: 3.3V to 5V  |
+| Operating Current: 40mA |
+![Tof_Sensor](https://yorobotics.co/producto/modulo-vl53l1x-laser-medidor-distancia-0-400cm-tof-arduino/)
 
 
-It is a sensor that uses ultrasonic sounds to detect the bounce time of sound from one side to the other. Using the ESP32 devkit v1 we can determine the distance based on the time it takes for the wave to return, performing the function of determining when there is a wall nearby, and thus making the corresponding turn.
-This sensor was chosen for its accuracy, low cost, and readily available documentation, outperforming other more expensive or less reliable distance-sensing options.
+It is a sensor that utilizes Time-of-Flight technology to measure the travel time of an infrared laser pulse from the emitter to a target and back. Using the ESP32 devkit v1, we can precisely calculate the distance based on the constant speed of light, performing the function of detecting nearby obstacles or walls and executing the required navigation turns. This sensor was chosen for its exceptional accuracy, compact size, and immunity to object color or texture, outperforming traditional ultrasonic or infrared alternatives that are often less reliable in varied environmental conditions.
 
 **18650 Battery:**
 | Specifications: |
