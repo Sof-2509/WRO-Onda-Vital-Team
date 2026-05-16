@@ -36,22 +36,25 @@ This challenge emphasizes all aspects of the engineering process, including:
 
 ### Mobility Management
 
-**Motor DC 12v with encoder:**
+**STS3215 servo (7.4V):**
 | Specifications: |
 | ------------- |
 | Voltage: 12V |
-| Gear Ratio: 1:34 |
-| Speed (at 12V): 126 RPM |
-| Torque: 4.2 kg·cm |
-| Weight: 86g |
-| Encoder: Optical, 12 counts per revolution |
-![encoder2](https://github.com/user-attachments/assets/47492287-88c9-4dba-ba15-793ce49024c4)
+| Gear Ratio: 1:345 |
+| Speed (at 7.4V): 53 RPM |
+| Torque: 5. 0 kg·cm |
+| Weight: 55g ± 1g |
+| Encoder: Magnetic, 4096 counts per revolution |
+|<img width="600" height="600" alt="407893fdcce8f4cda1cb6a1fcec4 jpg" src="https://github.com/user-attachments/assets/e1d177c3-8ff5-417e-9c58-2843a8215edc" />|
 
 
 
-the propulsion system relies on a DC motor paired with an encoder. the motor provides the mechanical force required to move the vehicle, while the encoder outputs two pulse signals (c!
-hannels A and B) that indicate the rotation direction and speed by measuring the number of pulses per revolution.
-We used these motors for their balance between power, efficiency, and cost, as well as their easy integration with common motor drivers like the L298N.
+
+
+
+The propulsion system uses a smart serial servo that combines a powerful motor, a heavy-duty gearbox, and a high-precision magnetic encoder into a single unit. This setup was chosen over a traditional DC motor because the smart servo handles its own speed and position control internally, freeing up the ESP32 microcontroller to focus entirely on navigation. It also simplifies the vehicle's design by replacing messy wiring with a clean, 3-wire system where multiple servos connect in a single chain, drastically reducing clutter and potential loose connections.
+
+Additionally, the built-in encoder is absolute, meaning the vehicle instantly knows the exact angle of its wheels the moment it turns on without needing any movement or calibration. The servo also constantly monitors its own temperature and electrical load, allowing the system to detect obstacles and prevent the motors from overheating or taking damage. Ultimately, these major benefits in processing efficiency, space saving, and built-in safety are the exact reasons we chose this smart servo architecture instead of a standard DC motor setup.
 
 
 **Servo Motor MG995:**
@@ -122,7 +125,9 @@ We selected the ESP32 Expansion Board V1 30P for its convenient pin access, stab
 | Resolution:  0.1 cm |
 | Input voltage: 3.3V to 5V  |
 | Operating Current: 40mA |
-![Tof_Sensor](https://yorobotics.co/producto/modulo-vl53l1x-laser-medidor-distancia-0-400cm-tof-arduino/)
+|<img width="431" height="350" alt="TOF SENSOR" src="https://github.com/user-attachments/assets/42626d9d-79f4-477b-a87f-266f059817c6" />|
+
+
 
 
 It is a sensor that utilizes Time-of-Flight technology to measure the travel time of an infrared laser pulse from the emitter to a target and back. Using the ESP32 devkit v1, we can precisely calculate the distance based on the constant speed of light, performing the function of detecting nearby obstacles or walls and executing the required navigation turns. This sensor was chosen for its exceptional accuracy, compact size, and immunity to object color or texture, outperforming traditional ultrasonic or infrared alternatives that are often less reliable in varied environmental conditions.
