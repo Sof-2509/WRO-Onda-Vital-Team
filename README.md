@@ -145,21 +145,22 @@ It is a sensor that utilizes Time-of-Flight technology to measure the travel tim
 we are going to use 3 of these li-ion batterys in parallel to power the vehicle, with an 18650 battery holder. This battery configuration provides a reliable and efficient power source for the robot’s electronics and actuators, supporting extended operation during competition or testing.
 
 
-**PixyCam v2:**
+**HuskyLens:**
 | Specifications: |
 | ------------- |
-| Processor: NXP LPC4330 |
-| Image sensor: Aptina MT9M114 |
-| Resolution:1296×976  |
-| Lens field-of-view: 80° horizontal, 40° vertical |
-| Power consumption: 140mA |
-| RAM: 264K bytes |
-| Flash Memory: 2M bytes |
-| Power input: 5V |
-![pixy-v21-camera-sensor](https://github.com/user-attachments/assets/74f57132-97c9-4abd-84b3-dc63150acd27)
+| Processor: Kendryte K210 (Dual-core RISC-V 64bit, 400 MHz) |
+| Image sensor: Kendryte K210 (Dual-core RISC-V 64bit, 400 MHz) |
+| Resolution: 320×240 (Screen) / Up to 640×480 (Image output)  |
+| Lens field-of-view: 65.0° horizontal, 47.2° vertical |
+| Power consumption: ~230mA (at 5V with backlight) |
+| RAM: 8MB (6MB SRAM for CPU + 2MB KPU AI hardware accelerator) |
+| Flash Memory: 16MB |
+| Power input:  3.3V to 5V |
+|<img width="335" height="150" alt="huskey lens img" src="https://github.com/user-attachments/assets/031f09ce-61b5-44ea-840f-0203b420a9c9" />|
 
-the camera is capable of detecting seven colors simultaneously and It is equipped with an internal processor, which lets us explore just the necessary information for the ESP32 to evade in the necessary way, depending on the obstacle colour.
- We selected this camera for its high-resolution image capture, easy interfacing with microcontrollers, and strong community support, providing superior performance and documentation compared to less common camera modules.
+
+We switched from the PixyCam v2 to the DFRobot HuskyLens because it upgrades the project from basic color tracking to real Artificial Intelligence (AI).
+While the PixyCam only tracks colors, the HuskyLens uses a powerful AI chip and neural networks to perform advanced tasks like face recognition, object tracking, and tag/QR code reading. Additionally, its massive memory upgrade (8MB RAM / 16MB Flash) allows it to process data incredibly fast, and its built-in 2.0-inch screen lets you train and debug the camera instantly without needing a computer. It is simply a much smarter, more versatile sensor for robotics.
 
 **Voltaje Regulator (Lm2596) :**
 | Specifications: |
