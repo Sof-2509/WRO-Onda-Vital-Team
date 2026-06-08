@@ -12,10 +12,17 @@
 
 the Project
 ===
-Our project consists of creating an automated land vehicle capable of navigating an environment marked by colored obstacles. the vehicle takes different paths depending on the color of the obstacle. We use an ESP32-based program (C++) that includes codes for the ultrasonic sensors (hc-sr04), which can detect objects at a predetermined distance. When an obstacle is detected, the sensors send a signal to the ESP32 circuit board, which then directs the vehicle’s movement system to turn det either clockwise or counterclockwise, as pre-established. Additionally, the vehicle is equipped with a camera module (Pixy v2) to detect colored obstacles and avoid them based on their color
+This project consists of an autonomous land vehicle capable of navigating an environment with colored obstacles. Depending on the detected color, the vehicle executes a predefined evasive maneuver (clockwise or counterclockwise turn).
 
-the core of the system is based on the ESP32 v1 devkit microcontroller, which provides a versatile platform with sufficient input/output pins and processing capability to manage multiple sensors and actuators for basic robotics applications. the vehicle features a DC motor equipped with an encoder, allowing for precise feedback on wheel rotation to enable closed-loop speed and distance control. Four ultrasonic sensors are strategically mounted to the vehicle, giving comprehensive environmental awareness by measuring distances to obstacles in front and on both sides. A motor driver shield is used to manage power delivery and control signals to the motor, while a servomotor handles steering actuation. the chassis for this vehicle was custom-designed using 3D modeling software and subsequently fabricated with a 3D printer.
+The system is controlled by an Arduino Uno microcontroller, which processes all sensors and actuators in real time. The Arduino Uno provides sufficient digital and analog I/O pins to interface with the distance sensors, camera module, and motor driver for basic robotics applications.
 
+For distance detection, the vehicle uses four VL53L1X ToF (Time-of-Flight) sensors, mounted on the front, rear, and sides. These sensors communicate with the Arduino Uno via the I²C bus. When an obstacle is detected within a predetermined distance (between 15 and 30 cm), the sensor sends a signal to the Arduino.
+
+For color detection, the vehicle is equipped with a HuskyLens AI camera module. It recognizes trained color signatures (red, blue, green, yellow, etc.) and sends the color information to the Arduino Uno via UART (serial communication).
+
+Based on the color received, the Arduino directs the motion system to turn clockwise or counterclockwise. Propulsion is provided by a Feetech STS3215 smart servomotor, while steering is handled by a standard servomotor. Both are controlled through a URT-1 motor driver.
+
+The vehicle's chassis was custom-designed using 3D modeling software and fabricated with a 3D printer.
 
 
 ## the Challenge
