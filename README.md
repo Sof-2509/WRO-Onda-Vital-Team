@@ -35,7 +35,13 @@ This challenge emphasizes all aspects of the engineering process, including:
 - Documentation: Showcasing engineering progress, design decisions, and open-source collaboration through a public GitHub repository.
 
 ## Photos of ALPHA
+| Front view | Back view | Left view | 
+| ------------- |------------- | ------------- |
+| | ![DELTA Back](https://github.com/user-attachments/assets/52d4785b-2a04-40ab-bfa1-ace6d514cec9)| ![DELTA Left](https://github.com/user-attachments/assets/4ff15c7c-de28-4c58-83e0-6b2941a30886)|
 
+| Right view | Top view | Bottom view |
+| ------------- | ------------- |------------- |
+|![DELTA Right](https://github.com/user-attachments/assets/4fad3d60-001c-4e51-b5a7-5031d2bf155f)| ![DELTA Top](https://github.com/user-attachments/assets/2741638f-efc4-4f0a-b089-daeeddca627b) |![DELTA Bottom](https://github.com/user-attachments/assets/dbf5b66c-b878-4635-9ba1-8910e8f668d6) |
 
 
 
@@ -64,29 +70,30 @@ The propulsion system uses a smart serial servo that combines a powerful motor, 
 Additionally, the built-in encoder is absolute, meaning the vehicle instantly knows the exact angle of its wheels the moment it turns on without needing any movement or calibration. The servo also constantly monitors its own temperature and electrical load, allowing the system to detect obstacles and prevent the motors from overheating or taking damage. Ultimately, these major benefits in processing efficiency, space saving, and built-in safety are the exact reasons we chose this smart servo architecture instead of a standard DC motor setup.
 
 
-**Servo Motor MG995:**
+**Servo Motor MG90s:**
 | Specifications: |
 | ------------- |
 | Voltage: 4.8-6V |
-| Torque: 9.4/11 kg/cm |
-| Rotation: 180° ± 10°  |
-![617BvnN0VJL _SL1500_](https://github.com/user-attachments/assets/b501ca45-12d2-46de-9c1c-de0f9dc0fb90)
+| Torque: 1.8/2.2 kg/cm |
+| Rotation: 360° ± 10°  |
+<img width="550" height="550" alt="servomg90s" src="https://github.com/user-attachments/assets/8e756081-108b-4ebe-bd81-def2a431791c" />
 
 
-A servomotor is integrated into the system to control steering. the servo receives PWM signals from a dedicated ESP32 pin, allowing precise angular positioning between 0° and 180°. the servo’s position is controlled programmatically to perform smooth and accurate movements.
-We chose this servo for its precise position control, ease of use with Arduino libraries, and widespread availability, offering better accuracy and reliability than cheaper or less-documented servos.
+A servomotor is integrated into the system to provide continuous rotational control for the propulsion or drive mechanism. The servo receives PWM signals from a dedicated ESP32 pin, allowing precise speed and direction control rather than angular positioning. Unlike standard 180° servos, this 360-degree continuous rotation version does not stop at fixed angles; instead, it rotates freely in either direction, with the PWM signal determining the rotation speed (from full speed forward to full speed reverse) and a specific neutral pulse width commanding a full stop.
+
+We chose the MG90S 360-degree servo for its compact size, metal gears, and continuous rotation capability, which offers greater durability and torque than standard plastic-geared servos. It provides smooth variable-speed control in both directions, is easy to implement using standard Arduino servo libraries (by adapting the write() function to set speeds), and is widely available at a low cost. This makes it ideal for applications requiring wheeled movement, conveyor belts, or other continuous motion tasks, while still benefiting from the reliability and straightforward interfacing common to the MG90S family.
+
 
 **Module l298n motor driver:**
 | Specifications: |
 | ------------- |
-| Power supply voltage: 5 to 35V  |
-| Output current:  0-36mA |
-| Can handle:  DC motors or stepper motors |
-![modulo-l298n-driver-control-motor-puente-h-arduino-0](https://github.com/user-attachments/assets/50e4565b-47fe-46c2-a331-fc19f75f6467)
+| Power supply voltage: 5 to 24V  |
+| Output Signal:  TTL/RS485 (3.3V or 5V switchable) |
+| Can handle:  Feetech SMS series (RS485) and SCS series (TTL) smart servo |
+<img width="800" height="517" alt="urt 1" src="https://github.com/user-attachments/assets/a6ab706b-0f16-4437-95d4-46cb8fd4bc56" />
 
-the L298N is a robust dual H-bridge motor driver IC capable of controlling two DC motors simultaneously or one stepper motor. Each channel of the L298N can deliver up to 2A continuous current (with adequate heat dissipation) and operates within a voltage range of 5V to 35V, making it suitable for a wide range of motors.
-This motor driver module interfaces easily with the ESP32 microcontroller, accepting PWM signals from the ESP32 for precise speed control and digital signals for direction control, enabling both forward and reverse movement. the L298N module also includes built-in protection mechanisms such as current sensing and thermal shutdown to safeguard the system during operation.
-the L298N was selected for this project due to its ability to control two motors at once, its compatibility with the ESP32.
+
+The FE-URT-1 was selected for this project due to its ability to control both SMS and SCS series servos simultaneously, its compatibility with the ESP32, and its support for real-time feedback including position, current, voltage, and temperature.
 
 ### Power and Sense Management
 
