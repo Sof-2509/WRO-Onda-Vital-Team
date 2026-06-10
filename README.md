@@ -14,13 +14,13 @@ the Project
 ===
 This project consists of an autonomous land vehicle capable of navigating an environment with colored obstacles. Depending on the detected color, the vehicle executes a predefined evasive maneuver (clockwise or counterclockwise turn).
 
-The system is controlled by an Arduino Uno microcontroller, which processes all sensors and actuators in real time. The Arduino Uno provides sufficient digital and analog I/O pins to interface with the distance sensors, camera module, and motor driver for basic robotics applications.
+The system is controlled by an Arduino Mega microcontroller, which processes all sensors and actuators in real time. The Arduino Uno provides sufficient digital and analog I/O pins to interface with the distance sensors, camera module, and motor driver for basic robotics applications.
 
-For distance detection, the vehicle uses four VL53L1X ToF (Time-of-Flight) sensors, mounted on the front, rear, and sides. These sensors communicate with the Arduino Uno via the I²C bus. When an obstacle is detected within a predetermined distance (between 15 and 30 cm), the sensor sends a signal to the Arduino.
+For distance detection, the vehicle uses four VL53L1X ToF (Time-of-Flight) sensors, mounted on the front, rear, and sides. These sensors communicate with the Arduino Mega via the SDA/SCL pins. When an obstacle is detected within a predetermined distance (between 15 and 30 cm), the sensor sends a signal to the Arduino.
 
-For color detection, the vehicle is equipped with a HuskyLens AI camera module. It recognizes trained color signatures (red, blue, green, yellow, etc.) and sends the color information to the Arduino Uno via UART (serial communication).
+For color detection, the vehicle is equipped with a HuskyLens AI camera module. It recognizes trained color signatures (red, blue, green, yellow, etc.) and sends the color information to the Arduino Mega via UART (serial communication).
 
-Based on the color received, the Arduino directs the motion system to turn clockwise or counterclockwise. Propulsion is provided by a Feetech STS3215 smart servomotor, while steering is handled by a standard servomotor. Both are controlled through a URT-1 motor driver.
+Based on the color received, the Arduino directs the motion system to turn clockwise or counterclockwise. Propulsion is provided by a Feetech STS3215 smart servomotor, while steering is handled by a standard servomotor. The STS3215 is controlled through a URT-1 motor driver.
 
 The vehicle's chassis was custom-designed using 3D modeling software and fabricated with a 3D printer.
 
@@ -61,10 +61,6 @@ This challenge emphasizes all aspects of the engineering process, including:
 |<img width="600" height="600" alt="407893fdcce8f4cda1cb6a1fcec4 jpg" src="https://github.com/user-attachments/assets/e1d177c3-8ff5-417e-9c58-2843a8215edc" />|
 
 
-
-
-
-
 The propulsion system uses a smart serial servo that combines a powerful motor, a heavy-duty gearbox, and a high-precision magnetic encoder into a single unit. This setup was chosen over a traditional DC motor because the smart servo handles its own speed and position control internally, freeing up the ESP32 microcontroller to focus entirely on navigation. It also simplifies the vehicle's design by replacing messy wiring with a clean, 3-wire system where multiple servos connect in a single chain, drastically reducing clutter and potential loose connections.
 
 Additionally, the built-in encoder is absolute, meaning the vehicle instantly knows the exact angle of its wheels the moment it turns on without needing any movement or calibration. The servo also constantly monitors its own temperature and electrical load, allowing the system to detect obstacles and prevent the motors from overheating or taking damage. Ultimately, these major benefits in processing efficiency, space saving, and built-in safety are the exact reasons we chose this smart servo architecture instead of a standard DC motor setup.
@@ -84,7 +80,7 @@ A servomotor is integrated into the system to provide continuous rotational cont
 We chose the MG90S 360-degree servo for its compact size, metal gears, and continuous rotation capability, which offers greater durability and torque than standard plastic-geared servos. It provides smooth variable-speed control in both directions, is easy to implement using standard Arduino servo libraries (by adapting the write() function to set speeds), and is widely available at a low cost. This makes it ideal for applications requiring wheeled movement, conveyor belts, or other continuous motion tasks, while still benefiting from the reliability and straightforward interfacing common to the MG90S family.
 
 
-**Module l298n motor driver:**
+**FE-URT-1:**
 | Specifications: |
 | ------------- |
 | Power supply voltage: 5 to 24V  |
@@ -92,43 +88,30 @@ We chose the MG90S 360-degree servo for its compact size, metal gears, and conti
 | Can handle:  Feetech SMS series (RS485) and SCS series (TTL) smart servo |
 <img width="800" height="517" alt="urt 1" src="https://github.com/user-attachments/assets/a6ab706b-0f16-4437-95d4-46cb8fd4bc56" />
 
+The FE-URT-1 serves as a specialized, hardware-driven communication bridge that allows an Arduino Mega to effortlessly command and read real-time telemetry from complex servo arrays. While the Arduino Mega communicates using separate transmit ($TX$) and receive ($RX$) lines, smart serial servos operate on a single-wire, half-duplex bus; the FE-URT-1 seamlessly bridges this gap using automatic hardware time-sharing circuitry to flip data directions instantly without taxing the Arduino’s processor. This solution vastly outperforms standard PWM controllers or DIY logic shifters by eliminating massive wiring clutter in favor of a clean, daisy-chained connection, allowing the Mega to treat the entire network as a standard plug-and-play serial port. Furthermore, its unique dual-signal architecture simultaneously drives both high-torque RS485 (SMS series) and TTL-level (SCS series) servos on the same bus, providing critical two-way feedback—such as position, current, voltage, and temperature—that blind, traditional controllers simply cannot capture.
+Despite these advantages, the board has distinct hardware constraints that require careful integration. Its onboard power tracks have a strict threshold of 6A, meaning any high-load or multi-servo setup will require you to bypass the board's power terminals and route an external power harness directly to the motors to prevent overheating the PCB. Additionally, because SMS and SCS servos often operate at different voltages (typically 12V versus 7.4V), the FE-URT-1 does not provide native voltage regulation; mixing these servo classes on a shared power rail without external buck regulators will permanently damage the lower-voltage components. Finally, the board relies on an outdated Mini-USB port for debugging and uses proprietary JST-style connectors, meaning field maintenance requires keeping a dedicated stock of spare cables on hand.
 
-The FE-URT-1 was selected for this project due to its ability to control both SMS and SCS series servos simultaneously, its compatibility with the ESP32, and its support for real-time feedback including position, current, voltage, and temperature.
 
 ### Power and Sense Management
 
-**ESP32 DevKit v1:**
+**Arduino Mega 2560:**
 
 |Specifications:|
 | ------------ |
-|Microcontroller: ESP32 |
-|Flash memory: 4 Mb |
-|SRAM: 520 Kb | 
-|Frequency: 2.4 GHz to 2.5 GHz |
-|Input voltage: 2.7 – 3.6V |
-|Pins: 30 |
-![ModuloESP32-DEVKITV1-30pines-min_1_2048x2048](https://github.com/user-attachments/assets/efbd9da1-9a60-4602-9d2a-44219e70ab41)
-
-ESP32 DevKit V1:
-the ESP32 DevKit V1 is a microcontroller board based on the ESP32 SoC, featuring a dual-core Tensilica processor running at up to 240 MHz. It offers integrated Wi-Fi and Bluetooth, multiple digital input/output pins, analog inputs, PWM outputs, a micro-USB connection, onboard voltage regulator, and reset/boot buttons. the ESP32 board runs the code that enables us to accomplish the challenge, processing sensor data to perform the required movements.
-
-We selected the ESP32 DevKit V1 for its wireless connectivity, higher processing power, and compatibility with a wide range of sensors and actuators. Its user-friendly development environment, strong community support, and extensive documentation make it easier to implement complex robotics tasks compared to less-documented microcontroller boards.
+|Microcontroller: ATMega2560 |
+|Flash memory: 256 KB (of which 8 KB is used by the bootloader) |
+|SRAM: 8 KB | 
+|Frequency: 16 MHz |
+|Input voltage: 7 V – 12 V |
+|Output voltage: 5V |
+|Pins: 54 Digital I/O (15 provide PWM output), 16 Analog Inputs |
 
 
-**ESP32 Expansion Base board v1:**
+The Arduino Mega 2560 is a microcontroller board based on the ATmega2560 chip, featuring an 8-bit AVR processor running at a stable 16 MHz clock speed. It offers an extensive array of 54 digital input/output pins (15 of which provide PWM outputs), 16 analog inputs, 4 hardware serial ports (UARTs), a standard USB connection, a power jack, and an onboard reset button. The Arduino Mega runs the core control loop that enables us to accomplish the challenge, simultaneously managing diverse hardware interfaces and processing incoming sensor data to execute real-time robot movements.
 
-|Specifications:|
-| ------------ |
-|Power supply: 5-12V|
-|On-board Regulator : 5V~1A |
-|SRAM: 520 Kb | 
-|Frequency: 2.4 GHz to 2.5 GHz |
-|Input voltage: 2.7 – 3.6V |
-![expansion board](https://github.com/user-attachments/assets/0ba4f354-1d29-45aa-8afe-bd514cc25211)
+We selected the Arduino Mega 2560 for its massive number of I/O pins, robust 5V operation, and abundance of dedicated hardware serial ports, which allow us to easily isolate and manage complex serial communications—such as bridging data to the FE-URT-1 servo board and the HuskyLens—without the need for unstable software-emulated serial lines. However, its notable limitations include a low 16 MHz clock speed and a highly restricted 8 KB of SRAM, which can quickly bottleneck advanced data processing or large arrays compared to modern 32-bit controllers. Additionally, its large physical footprint occupies considerable chassis space, its lack of built-in Wi-Fi or Bluetooth requires external modules for wireless telemetry, and the lower 40mA current limit per I/O pin means it cannot drive power-hungry components directly.
 
-the ESP32 Expansion Board V1 30P is an add-on board designed to extend the functionality of ESP32 development boards, featuring 30 accessible pins for easy connection to various peripherals. It provides organized access to multiple digital and analog inputs/outputs, power rails, and communication interfaces such as I2C, SPI, and UART. the expansion board simplifies prototyping by offering clearly labeled headers, additional power regulation options, and secure mounting for the ESP32 module, enabling robust connections for sensors, actuators, and external modules.
 
-We selected the ESP32 Expansion Board V1 30P for its convenient pin access, stable power distribution, and compatibility with a broad range of hardware components. Its well-organized layout, ease of integration, and community support streamline the development of complex robotics solutions, making it preferable to less modular expansion boards or direct wiring, which can lead to unreliable connections and increased troubleshooting.
 
 
 **Tof Sensor (VL53L1X):**
@@ -143,10 +126,9 @@ We selected the ESP32 Expansion Board V1 30P for its convenient pin access, stab
 
 
 
-
 It is a sensor that utilizes Time-of-Flight technology to measure the travel time of an infrared laser pulse from the emitter to a target and back. Using the ESP32 devkit v1, we can precisely calculate the distance based on the constant speed of light, performing the function of detecting nearby obstacles or walls and executing the required navigation turns. This sensor was chosen for its exceptional accuracy, compact size, and immunity to object color or texture, outperforming traditional ultrasonic or infrared alternatives that are often less reliable in varied environmental conditions.
 
-**18650 Battery:**
+**Li-ion 7.4V Battery:**
 | Specifications: |
 | ------------- |
 | Capacity: 3000 mAh |
@@ -154,9 +136,17 @@ It is a sensor that utilizes Time-of-Flight technology to measure the travel tim
 | Discharge rate:  0.25C |
 | Weight: 48 g (one battery) |
 | Size: 18 mm diameter, 65 mm length |
-![image](https://github.com/user-attachments/assets/09afb713-b1cb-4bf8-b15b-2e0a06950587)
 
-we are going to use 3 of these li-ion batterys in parallel to power the vehicle, with an 18650 battery holder. This battery configuration provides a reliable and efficient power source for the robot’s electronics and actuators, supporting extended operation during competition or testing.
+
+**9V Akaline Battery:**
+| Specifications: |
+| ------------- |
+| Capacity: 3000 mAh |
+| Voltage: 3.7 V |
+| Discharge rate:  0.25C |
+| Weight: 48 g (one battery) |
+| Size: 18 mm diameter, 65 mm length |
+
 
 
 **HuskyLens:**
@@ -172,9 +162,12 @@ we are going to use 3 of these li-ion batterys in parallel to power the vehicle,
 | Power input:  3.3V to 5V |
 |<img width="335" height="150" alt="huskey lens img" src="https://github.com/user-attachments/assets/031f09ce-61b5-44ea-840f-0203b420a9c9" />|
 
+The HuskyLens is an easy-to-use AI machine vision sensor that utilizes an onboard Kendryte K210 dual-core processor to run deep learning algorithms locally, allowing a microcontroller to implement advanced vision features via standard I2C or UART without any machine learning or OpenCV programming. By simply pointing the camera at an object and clicking its physical learning button, users can instantly train the module to handle complex real-time tasks like object tracking, face recognition, line following, color classification, and AprilTag decoding, completely freeing the main controller from heavy processing overhead. However, the sensor has distinct drawbacks: its fixed firmware restricts users from uploading custom neural network models, its detection reliability drops noticeably under erratic ambient lighting conditions, and its high power consumption—driven by continuous onboard image processing and a built-in IPS screen—can easily cause 
+system brownouts if it is not supplied by a dedicated, stable external power source rather than a standard microcontroller pin.
 
 We switched from the PixyCam v2 to the DFRobot HuskyLens because it upgrades the project from basic color tracking to real Artificial Intelligence (AI).
 While the PixyCam only tracks colors, the HuskyLens uses a powerful AI chip and neural networks to perform advanced tasks like face recognition, object tracking, and tag/QR code reading. Additionally, its massive memory upgrade (8MB RAM / 16MB Flash) allows it to process data incredibly fast, and its built-in 2.0-inch screen lets you train and debug the camera instantly without needing a computer. It is simply a much smarter, more versatile sensor for robotics.
+
 
 **Voltaje Regulator (Lm2596) :**
 | Specifications: |
@@ -184,4 +177,6 @@ While the PixyCam only tracks colors, the HuskyLens uses a powerful AI chip and 
 | Energy eficiency : 80% |
 ![voltage regulator](https://github.com/user-attachments/assets/7e0a2466-8ae1-4540-9adb-790cd3f9cec8)
 
-The module LM2596 is a regulator step down that can reduce de voltage of input to a lower voltage in output 
+The LM2596 is a monolithic step-down (buck) switching regulator that efficiently reduces a higher DC input voltage to a lower, stable DC output using Pulse Width Modulation (PWM). Unlike traditional linear regulators that waste excess voltage by converting it entirely into heat, the LM2596 operates as a rapid electronic switch driven by an internal 150 kHz oscillator. It chops the incoming DC voltage into high-frequency square waves, passes them through a power inductor and capacitor network (an LC filter), and smooths them back out into a steady, lower voltage. This switching method allows the module to routinely achieve power efficiencies between 73% and 90%, making it an ideal choice for powering voltage-sensitive components—such as driving lower-voltage serial servos from a main 12V power rail—without generating massive amounts of waste heat or requiring a bulky heatsink.
+
+However, the module has distinct drawbacks and design constraints that must be accounted for in a robust system. Because it operates at a fixed 150 kHz switching frequency, which is relatively slow compared to modern megahertz-range regulators, it requires physically larger inductors and capacitors to filter out electrical noise, resulting in a bulkier hardware footprint. Additionally, the LM2596 is a non-synchronous regulator that relies on an external Schottky catch diode to complete the circuit when the internal switch is off; this diode introduces a constant voltage drop that reduces overall efficiency under heavy current loads near its 3A maximum limit. Finally, due to the immense popularity of this module, the market is heavily flooded with counterfeit and clone ICs that often run at sub-standard frequencies, overheat quickly, and exhibit high voltage ripple, making it critical to source the components from reputable suppliers to protect your microcontroller and hardware components.
