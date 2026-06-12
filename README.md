@@ -91,6 +91,42 @@ We chose the MG90S 360-degree servo for its compact size, metal gears, and conti
 The FE-URT-1 serves as a specialized, hardware-driven communication bridge that allows an Arduino Mega to effortlessly command and read real-time telemetry from complex servo arrays. While the Arduino Mega communicates using separate transmit ($TX$) and receive ($RX$) lines, smart serial servos operate on a single-wire, half-duplex bus; the FE-URT-1 seamlessly bridges this gap using automatic hardware time-sharing circuitry to flip data directions instantly without taxing the Arduino’s processor. This solution vastly outperforms standard PWM controllers or DIY logic shifters by eliminating massive wiring clutter in favor of a clean, daisy-chained connection, allowing the Mega to treat the entire network as a standard plug-and-play serial port. Furthermore, its unique dual-signal architecture simultaneously drives both high-torque RS485 (SMS series) and TTL-level (SCS series) servos on the same bus, providing critical two-way feedback—such as position, current, voltage, and temperature—that blind, traditional controllers simply cannot capture.
 Despite these advantages, the board has distinct hardware constraints that require careful integration. Its onboard power tracks have a strict threshold of 6A, meaning any high-load or multi-servo setup will require you to bypass the board's power terminals and route an external power harness directly to the motors to prevent overheating the PCB. Additionally, because SMS and SCS servos often operate at different voltages (typically 12V versus 7.4V), the FE-URT-1 does not provide native voltage regulation; mixing these servo classes on a shared power rail without external buck regulators will permanently damage the lower-voltage components. Finally, the board relies on an outdated Mini-USB port for debugging and uses proprietary JST-style connectors, meaning field maintenance requires keeping a dedicated stock of spare cables on hand.
 
+### 1. Mobility and Mechanical Design
+
+To ensure optimal mobility and navigate the dynamic WRO racetrack efficiently, our mechanical architecture was developed through strict engineering principles, prioritizing mechanical stability, precise kinematics, and calculated power distribution.
+
+#### Chassis Design and Mechanical Stability
+The vehicle's chassis was custom-designed in CAD and fabricated using a 3D printer. Rather than a standard flat-plate design, we engineered a multi-tiered chassis to optimize the center of gravity (CoG). The heaviest components—the 7.4V Li-ion battery pack and the STS3215 drive servo—are mounted on the lowest possible tier, perfectly centered between the rear and front axles. The bulky Arduino Mega and the FE-URT-1 driver are mounted on a secondary upper deck. This specific weight distribution drastically improves mechanical stability, preventing the robot from tipping or drifting outward due to centrifugal force during sharp, high-speed evasion maneuvers.
+
+
+#### Drivetrain and Transmission Trade-offs
+To optimize our vehicle's performance, we implemented a custom transmission featuring a 1:2 gear ratio (step-up overdrive) rather than a standard 1:1 direct drive. 
+
+**Engineering Reasoning (Torque vs. Speed):**
+By gearing up the system, we intentionally trade a portion of our raw motor torque to double our top wheel speed. This is a critical trade-off: a direct drive provided too much unnecessary pulling power but severely limited our lap times. 
+
+Using the STS3215 servo's base speed of 53 RPM, our 1:2 configuration outputs an effective 106 RPM at the wheel axle. With a wheel radius of $r = 0.033 \text{ m}$, we calculate our theoretical maximum linear velocity ($v$) using the following kinematic equation:
+$$v = \omega \times r \times \frac{2\pi}{60}$$
+$$v = 106 \times 0.033 \times \frac{2\pi}{60} \approx 0.366 \text{ m/s}$$
+Even with the torque halved by the transmission, the STS3215's massive baseline force (5.0 kg·cm) leaves us with an effective 2.5 kg·cm at the wheels. This is mathematically more than enough to overcome the static friction of our 1.2 kg vehicle, giving us a significant speed advantage on straightaways without risking motor stalls.
+
+
+
+#### Steering Mechanism: Rack and Pinion
+Instead of relying on differential drive (tank steering) or a basic single-arm Ackermann linkage, we engineered a custom **Rack and Pinion** steering system for the front axle, driven by the MG90S continuous servo.
+
+**Design Options and Justification:**
+* **Differential Drive:** Rejected because it causes extreme tire wear and unpredictable micro-stutters when making small lane-following adjustments.
+* **Basic Linkage:** Rejected because uneven servo arm angles create "bump steer," making the turning radius asymmetrical.
+* **Rack and Pinion (Chosen):** This mechanism efficiently converts the rotational motion of the steering servo into precise, symmetrical linear motion for the steering knuckles. This direct mechanical linkage completely eliminates "slop" (mechanical play) in the assembly. By minimizing mechanical latency, our software's PID controller corrections translate instantly to the wheels, allowing for smooth, highly responsive lane following.
+
+
+#### Evidence of Mechanical Iterations
+Our final design is the result of three major physical iterations, directly influenced by performance data:
+1.  **Iteration 1 (Direct Drive):** The initial prototype mounted the wheels directly to the STS3215. While torque was exceptional, the top speed of 0.183 m/s made it impossible to achieve competitive lap times. 
+2.  **Iteration 2 (1:3 Gear Ratio):** We attempted to maximize speed with a 1:3 ratio. However, the torque reduction was too severe. The vehicle struggled to accelerate from a dead stop and stalled when encountering slight bumps on the track mat.
+3.  **Iteration 3 (1:2 Gear Ratio & Widened Wheelbase):** We settled on the 1:2 ratio as the perfect mathematical sweet spot for our weight class. Additionally, during this phase, we widened the front steering track by 15% to accommodate the new Rack and Pinion system, which successfully eliminated the understeer we experienced in Iterations 1 and 2.
+
 
 ### Power and Sense Management
 
