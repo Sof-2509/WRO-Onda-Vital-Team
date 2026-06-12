@@ -105,6 +105,7 @@ Despite these advantages, the board has distinct hardware constraints that requi
 |Input voltage: 7 V – 12 V |
 |Output voltage: 5V |
 |Pins: 54 Digital I/O (15 provide PWM output), 16 Analog Inputs |
+<img width="800" height="800" alt="mega" src="https://github.com/user-attachments/assets/f791446f-2dd8-484c-830a-ea2b3c7ec1e7" />
 
 
 The Arduino Mega 2560 is a microcontroller board based on the ATmega2560 chip, featuring an 8-bit AVR processor running at a stable 16 MHz clock speed. It offers an extensive array of 54 digital input/output pins (15 of which provide PWM outputs), 16 analog inputs, 4 hardware serial ports (UARTs), a standard USB connection, a power jack, and an onboard reset button. The Arduino Mega runs the core control loop that enables us to accomplish the challenge, simultaneously managing diverse hardware interfaces and processing incoming sensor data to execute real-time robot movements.
@@ -131,12 +132,13 @@ It is a sensor that utilizes Time-of-Flight technology to measure the travel tim
 **Li-ion 7.4V Battery:**
 | Specifications: |
 | ------------- |
-| Capacity: 3000 mAh |
-| Voltage: 3.7 V |
-| Discharge rate:  0.25C |
-| Weight: 48 g (one battery) |
-| Size: 18 mm diameter, 65 mm length |
+| Capacity: 1200 mAh |
+| Voltage: 7.4 |
+| Discharge rate:  1C–2C |
+| Weight: 46 g (one battery) |
+| Size: 14 mm thickness, 28 mm width, 50 mm length. |
 
+The 7.4V 14500 Li-ion pack is a high-density power solution consisting of two AA-sized lithium cells in a 2S configuration, delivering a nominal 7.4V (8.4V fully charged) and a capacity of 800–1200 mAh. It is favored over standard 9V batteries because it provides a vastly superior energy-to-weight ratio and higher discharge rates (1C to 5C+), allowing it to easily supply the peak currents demanded by small robotic actuators and servos. However, it requires a mandatory Battery Management System (BMS) circuit to prevent dangerous over-discharging or thermal runaway, alongside a specialized balance charger for safe maintenance.
 
 **9V Akaline Battery:**
 | Specifications: |
@@ -145,9 +147,10 @@ It is a sensor that utilizes Time-of-Flight technology to measure the travel tim
 | Voltage: 3.7 V |
 | Discharge rate:  0.25C |
 | Weight: 48 g (one battery) |
-| Size: 18 mm diameter, 65 mm length |
+| Size: 48.5 mm height, 26.5 mm length, 17.5 mm width. |
+<img width="642" height="478" alt="screenshot_120" src="https://github.com/user-attachments/assets/d137d3ea-6ab3-4a94-8967-d93da40993eb" />
 
-
+The 9V battery is a standardized, compact power source that uses six internal 1.5V cells in series to deliver an immediate 9V output, making it highly portable and ideal for low-drain control circuits like the logic side of an Arduino Mega. While it offers plug-and-play simplicity and eliminates the need for voltage boosters, it suffers from a very low capacity (around 200–500 mAh) and high internal resistance; this causes its voltage to drop drastically under heavy loads, making it completely unsuitable for driving motors or serial servos without rapidly draining or triggering microcontroller brownouts.
 
 **HuskyLens:**
 | Specifications: |
