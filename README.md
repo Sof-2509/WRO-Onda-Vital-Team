@@ -186,6 +186,8 @@ It is a sensor that utilizes Time-of-Flight technology to measure the travel tim
 | Discharge rate:  1C–2C |
 | Weight: 46 g (one battery) |
 | Size: 14 mm thickness, 28 mm width, 50 mm length. |
+|<img width="500" height="500" alt="7v-lithium-ion-battery" src="https://github.com/user-attachments/assets/08915214-46f4-4ca8-b85e-571ea9ab93f0" />|
+
 
 The 7.4V 14500 Li-ion pack is a high-density power solution consisting of two AA-sized lithium cells in a 2S configuration, delivering a nominal 7.4V (8.4V fully charged) and a capacity of 800–1200 mAh. It is favored over standard 9V batteries because it provides a vastly superior energy-to-weight ratio and higher discharge rates (1C to 5C+), allowing it to easily supply the peak currents demanded by small robotic actuators and servos. However, it requires a mandatory Battery Management System (BMS) circuit to prevent dangerous over-discharging or thermal runaway, alongside a specialized balance charger for safe maintenance.
 
@@ -197,7 +199,7 @@ The 7.4V 14500 Li-ion pack is a high-density power solution consisting of two AA
 | Discharge rate:  0.25C |
 | Weight: 48 g (one battery) |
 | Size: 48.5 mm height, 26.5 mm length, 17.5 mm width. |
-<img width="642" height="478" alt="screenshot_120" src="https://github.com/user-attachments/assets/d137d3ea-6ab3-4a94-8967-d93da40993eb" />
+|<img width="642" height="478" alt="screenshot_120" src="https://github.com/user-attachments/assets/d137d3ea-6ab3-4a94-8967-d93da40993eb" />|
 
 The 9V battery is a standardized, compact power source that uses six internal 1.5V cells in series to deliver an immediate 9V output, making it highly portable and ideal for low-drain control circuits like the logic side of an Arduino Mega. While it offers plug-and-play simplicity and eliminates the need for voltage boosters, it suffers from a very low capacity (around 200–500 mAh) and high internal resistance; this causes its voltage to drop drastically under heavy loads, making it completely unsuitable for driving motors or serial servos without rapidly draining or triggering microcontroller brownouts.
 
