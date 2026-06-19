@@ -37,11 +37,11 @@ This challenge emphasizes all aspects of the engineering process, including:
 ## Photos of ALPHA
 | Front view | Back view | Left view | 
 | ------------- |------------- | ------------- |
-| | ![DELTA Back](https://github.com/user-attachments/assets/52d4785b-2a04-40ab-bfa1-ace6d514cec9)| ![DELTA Left](https://github.com/user-attachments/assets/4ff15c7c-de28-4c58-83e0-6b2941a30886)|
+|<img width="1920" height="2560" alt="Front view" src="https://github.com/user-attachments/assets/76a4cd6c-5f99-487d-859d-22aa89f2e2cf" />| <img width="1920" height="2560" alt="Back view" src="https://github.com/user-attachments/assets/fd3d5764-00de-4738-82e3-c523a8509ab6" />| <img width="2560" height="1920" alt="Left view" src="https://github.com/user-attachments/assets/b79feafa-6abe-4e7c-a645-65041fd8a896" />|
 
 | Right view | Top view | Bottom view |
 | ------------- | ------------- |------------- |
-|![DELTA Right](https://github.com/user-attachments/assets/4fad3d60-001c-4e51-b5a7-5031d2bf155f)| ![DELTA Top](https://github.com/user-attachments/assets/2741638f-efc4-4f0a-b089-daeeddca627b) |![DELTA Bottom](https://github.com/user-attachments/assets/dbf5b66c-b878-4635-9ba1-8910e8f668d6) |
+| <img width="2560" height="1920" alt="Right view" src="https://github.com/user-attachments/assets/6166ea84-83fc-49c1-8a40-538df530511b" />| <img width="2560" height="1920" alt="Top view" src="https://github.com/user-attachments/assets/5056f716-64b3-4d5d-9df0-d5e7563c98db" />| <img width="1920" height="2560" alt="Bottom view" src="https://github.com/user-attachments/assets/4fc3b08a-3b55-41fe-834f-09908a8d06dc" />|
 
 
 
@@ -72,7 +72,7 @@ Additionally, the built-in encoder is absolute, meaning the vehicle instantly kn
 | Voltage: 4.8-6V |
 | Torque: 1.8/2.2 kg/cm |
 | Rotation: 360° ± 10°  |
-<img width="550" height="550" alt="servomg90s" src="https://github.com/user-attachments/assets/8e756081-108b-4ebe-bd81-def2a431791c" />
+|<img width="550" height="550" alt="servomg90s" src="https://github.com/user-attachments/assets/8e756081-108b-4ebe-bd81-def2a431791c" />|
 
 
 A servomotor is integrated into the system to provide continuous rotational control for the propulsion or drive mechanism. The servo receives PWM signals from a dedicated ESP32 pin, allowing precise speed and direction control rather than angular positioning. Unlike standard 180° servos, this 360-degree continuous rotation version does not stop at fixed angles; instead, it rotates freely in either direction, with the PWM signal determining the rotation speed (from full speed forward to full speed reverse) and a specific neutral pulse width commanding a full stop.
@@ -86,7 +86,7 @@ We chose the MG90S 360-degree servo for its compact size, metal gears, and conti
 | Power supply voltage: 5 to 24V  |
 | Output Signal:  TTL/RS485 (3.3V or 5V switchable) |
 | Can handle:  Feetech SMS series (RS485) and SCS series (TTL) smart servo |
-<img width="800" height="517" alt="urt 1" src="https://github.com/user-attachments/assets/a6ab706b-0f16-4437-95d4-46cb8fd4bc56" />
+|<img width="800" height="517" alt="urt 1" src="https://github.com/user-attachments/assets/a6ab706b-0f16-4437-95d4-46cb8fd4bc56" />|
 
 The FE-URT-1 serves as a specialized, hardware-driven communication bridge that allows an Arduino Mega to effortlessly command and read real-time telemetry from complex servo arrays. While the Arduino Mega communicates using separate transmit ($TX$) and receive ($RX$) lines, smart serial servos operate on a single-wire, half-duplex bus; the FE-URT-1 seamlessly bridges this gap using automatic hardware time-sharing circuitry to flip data directions instantly without taxing the Arduino’s processor. This solution vastly outperforms standard PWM controllers or DIY logic shifters by eliminating massive wiring clutter in favor of a clean, daisy-chained connection, allowing the Mega to treat the entire network as a standard plug-and-play serial port. Furthermore, its unique dual-signal architecture simultaneously drives both high-torque RS485 (SMS series) and TTL-level (SCS series) servos on the same bus, providing critical two-way feedback—such as position, current, voltage, and temperature—that blind, traditional controllers simply cannot capture.
 Despite these advantages, the board has distinct hardware constraints that require careful integration. Its onboard power tracks have a strict threshold of 6A, meaning any high-load or multi-servo setup will require you to bypass the board's power terminals and route an external power harness directly to the motors to prevent overheating the PCB. Additionally, because SMS and SCS servos often operate at different voltages (typically 12V versus 7.4V), the FE-URT-1 does not provide native voltage regulation; mixing these servo classes on a shared power rail without external buck regulators will permanently damage the lower-voltage components. Finally, the board relies on an outdated Mini-USB port for debugging and uses proprietary JST-style connectors, meaning field maintenance requires keeping a dedicated stock of spare cables on hand.
@@ -141,7 +141,7 @@ Our final design is the result of three major physical iterations, directly infl
 |Input voltage: 7 V – 12 V |
 |Output voltage: 5V |
 |Pins: 54 Digital I/O (15 provide PWM output), 16 Analog Inputs |
-<img width="800" height="800" alt="mega" src="https://github.com/user-attachments/assets/f791446f-2dd8-484c-830a-ea2b3c7ec1e7" />
+|<img width="800" height="800" alt="mega" src="https://github.com/user-attachments/assets/f791446f-2dd8-484c-830a-ea2b3c7ec1e7" />|
 
 
 The Arduino Mega 2560 is a microcontroller board based on the ATmega2560 chip, featuring an 8-bit AVR processor running at a stable 16 MHz clock speed. It offers an extensive array of 54 digital input/output pins (15 of which provide PWM outputs), 16 analog inputs, 4 hardware serial ports (UARTs), a standard USB connection, a power jack, and an onboard reset button. The Arduino Mega runs the core control loop that enables us to accomplish the challenge, simultaneously managing diverse hardware interfaces and processing incoming sensor data to execute real-time robot movements.
@@ -165,6 +165,19 @@ We selected the Arduino Mega 2560 for its massive number of I/O pins, robust 5V 
 
 It is a sensor that utilizes Time-of-Flight technology to measure the travel time of an infrared laser pulse from the emitter to a target and back. Using the ESP32 devkit v1, we can precisely calculate the distance based on the constant speed of light, performing the function of detecting nearby obstacles or walls and executing the required navigation turns. This sensor was chosen for its exceptional accuracy, compact size, and immunity to object color or texture, outperforming traditional ultrasonic or infrared alternatives that are often less reliable in varied environmental conditions.
 
+**Tof Sensor (VL53L0X):**
+| Specifications: |
+| ------------- |
+| Accuracy:  ±5% |
+| Measurement Range: 0 a 400 cm |
+| Resolution:  0.1 cm |
+| Input voltage: 3.3V to 5V  |
+| Operating Current: 40mA |
+|<img width="800" height="800" alt="SN-VL53L0X-TOF-MOD" src="https://github.com/user-attachments/assets/a431b634-1bfa-4a46-925b-c14a6a2c19f1" />|
+
+
+
+It is a sensor that utilizes Time-of-Flight technology to measure the travel time of an infrared laser pulse from the emitter to a target and back. Using the ESP32 devkit v1, we can precisely calculate the distance based on the constant speed of light, performing the function of detecting nearby obstacles or walls and executing the required navigation turns. This sensor was chosen for its exceptional accuracy, compact size, and immunity to object color or texture, outperforming traditional ultrasonic or infrared alternatives that are often less reliable in varied environmental conditions.
 **Li-ion 7.4V Battery:**
 | Specifications: |
 | ------------- |
